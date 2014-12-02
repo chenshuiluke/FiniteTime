@@ -8,7 +8,12 @@ Uses
 
 2. You can use it to prank your siblings! There is a prank version that, if you can configure it to run automatically on your victim's computer with admin rights, will shutdown the victim's computer after one minute of it opening. I didn't want to make it *too* dangerous so I made it wait one minute before executing the shutdown command.
 
-3. You can use it when you're rendering videos late at night and want to go to bed but don't want to leave your computer on all night. Just set it to about 30 minutes after that video editor's ETA and go to sleep :)
+3. You can use it when you're rendering videos late at night and want to go to bed but don't want to leave your computer on all night. Just set it to about 30 minutes after that video editor's ETA and go to sleep.
+:)
+
+New
+--
+OR you can use the new cpu-usage-based termination features. Sony Vegas uses a lot of CPU to render videos, right? So, naturally, if it's done rendering, the CPU usage will go back down to a certain level, right? FiniteTime is now able to detect the CPU usage of a program and shutdown/restart the computer if it's beneath or above the specified threshold.
 
 Usage (Executable Binaries)
 --

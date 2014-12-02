@@ -21,19 +21,23 @@ def shutdownOrReboot(mode):
 	
 def printCPUValues():
 	for proc in psutil.process_iter():
-		print proc
+		try:
+			proc = proc.as_dict(attrs = ["name", "exe"])
+			if(proc['name'] != None):			
+				print str(proc['name'])
+		except:
+			print "This process cannot be accessed."			
 
 def searchProcess(name):
 	found = False
 	idNum = 0
 	for proc in psutil.process_iter():
 		try:
-			if (proc.name() == name):
+			if (str(proc.name()) == name):
 				found = True
 				idNum = proc.pid
 		except:
-       			print "Permission error or access denied on process"
-			sys.exit(0)
+			vix = 0 #unnecessary	
 	return found, idNum
 	
 #This function checks to see if the character is a number, or a letter
@@ -165,17 +169,23 @@ if(is_admin):
 			print "Enter '>' if you want to shutdown/restart if the CPU usage is greater than the threshold."
 			print "Enter '<' if you want to shutdown/restart if the CPU usage is lower than the threshold."
 			comparison = raw_input()
+		CPUUsage = threshold
 		if (comparison == ">"):
 
-			while(psutil.Process(id).get_cpu_percent(interval = 0.1) <= threshold):
+			while(CPUUsage <= threshold):
 
- 						
-				print "Name :%s CPU Usage: %f" % (psutil.Process(id).name,psutil.Process(id).get_cpu_percent(interval = 0.1))
+ 				p = psutil.Process(id)
+				CPUUsage = p.get_cpu_percent(interval = 1)
+				p = p.as_dict(attrs = ["name", "exe"])						
+				print "Name :%s CPU Usage: %f\r" % (p['name'],CPUUsage),
+				sys.stdout.flush()
 		elif(comparison == "<"):
-			while(psutil.Process(id).get_cpu_percent(interval = 0.1) >= threshold):
-
-				print "Name :%s CPU Usage: %f" % (psutil.Process(id).name,psutil.Process(id).get_cpu_percent(interval = 0.1))
-		
+			while(CPUUsage >= threshold):
+				p = psutil.Process(id)
+				CPUUsage = p.get_cpu_percent(interval = 1)
+				p = p.as_dict(attrs = ["name", "exe"])						
+				print "Name :%s CPU Usage: %f\r" % (p['name'],CPUUsage),
+				sys.stdout.flush()
 		shutdownOrReboot(mode)			
 else:
 	print "You need to be root or an Administrator to run this."
